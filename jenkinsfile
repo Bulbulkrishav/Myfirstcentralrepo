@@ -1,13 +1,16 @@
 pipeline {
     agent any
     stages {
-
-    // Build
-    stage('Build') {
-      steps {
-        deleteDir()
-        checkout scm
-      }
+        stage('Build') {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
+        stage('listing') {
+            steps {
+                sh "ls -ltr"
+            }
+        }
     }
-}
 }
