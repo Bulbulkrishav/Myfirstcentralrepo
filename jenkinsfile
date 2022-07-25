@@ -5,11 +5,12 @@ pipeline {
             steps {
                 deleteDir()
                 checkout scm
+                sh "ls -ltr"
             }
         }
         stage('listing') {
             steps {
-                sh "ls -ltr"
+                echo "hello world"
             }
         }
     }
