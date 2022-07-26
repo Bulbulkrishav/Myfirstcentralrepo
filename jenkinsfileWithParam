@@ -11,35 +11,28 @@ pipeline {
                 checkout scm
             }
         }
-        stage('build') {
-            steps {
-                withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1') {
-                sh '''
-                echo "hello world"
-                ls -ltr
-                '''
-                }
-            }
-        }
         stage('deploy') {
             steps {
                 script {
-                    if ( params.METHOD == 'create') 
-                        {
-                        sh '''
-                        echo "stack creation"
-                        ls -ltr
-                        aws cloudformation create-stack --stack-name EC2-CFT-1 --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
-                        '''
-                        }
-                    else if ( params.METHOD == 'delete') 
-                        {
-                        sh '''
-                        echo "stack deletion"
-                        aws cloudformation delete-stack --stack-name EC2-CFT-1 
-                        '''
-                        }
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'create') 
+                            {
+                            sh '''
+                            echo "stack creation"
+                            ls -ltr
+                            aws cloudformation create-stack --stack-name EC2-CFT-1 --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
+                            '''
+                            }
+                        else if ( params.METHOD == 'delete') 
+                            {
+                            sh '''
+                            echo "stack deletion"
+                            aws cloudformation delete-stack --stack-name EC2-CFT-1 
+                            '''
+                            }
                     }
+                }    
             }
         }
     }
