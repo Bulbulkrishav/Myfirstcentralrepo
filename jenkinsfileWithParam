@@ -24,7 +24,7 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
-                    if (env.parameters == 'create') 
+                    if ( params.METHOD == 'create') 
                         {
                         sh '''
                         echo "stack creation"
@@ -32,7 +32,7 @@ pipeline {
                         aws cloudformation create-stack --stack-name EC2-CFT-1 --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
                         '''
                         }
-                    else if (env.BRANCH_NAME == 'delete') 
+                    else if ( params.METHOD == 'delete') 
                         {
                         sh '''
                         echo "stack deletion"
