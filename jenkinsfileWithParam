@@ -5,6 +5,9 @@ pipeline {
         choice(name: 'METHOD', choices: ['create','delete'], description: 'select create or delete stack')
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'enter your stack prefix') 
         }
+    environment {
+        stack_prefix = "${params.STACK_PREFIX}"
+    }    
     stages {
         stage('Checkout') {
             steps {
@@ -23,8 +26,9 @@ pipeline {
                             {
                             sh '''
                             echo "stack creation"
+                            echo "${stack_prefix}"
                             ls -ltr
-                            aws cloudformation create-stack --stack-name EC2-CFT-"${params.STACK_PREFIX}" --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
+                            aws cloudformation create-stack --stack-name EC2-CFT-"${stack_prefix}" --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
                             '''
                             }
                         else if ( params.METHOD == 'delete') 
