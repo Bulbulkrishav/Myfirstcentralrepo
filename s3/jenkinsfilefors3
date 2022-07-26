@@ -12,7 +12,7 @@ pipeline {
                 withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1') {
                 sh '''
                 echo "welcome to s3"
-                aws cloudformation create-stack --stack-name bulbul-s3-1 --template-body file://s3.yml
+                aws cloudformation create-stack --stack-name bulbul-s3-1 --template-body file://s3Bucket.yml
                 '''
                 }
             }
