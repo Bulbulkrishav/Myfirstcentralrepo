@@ -2,9 +2,8 @@ pipeline {
     agent any
     parameters {
         // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
-            choice(
-                choices: ['CREATE', 'DELETE']
-                )  }
+        choice(name: 'METHOD', choices: ['create','delete'], description: 'select create or delete stack')  
+        }
     stages {
         stage('Checkout') {
             steps {
@@ -25,7 +24,7 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
-                    if (env.parameters == 'CREATE') 
+                    if (env.parameters == 'create') 
                         {
                         sh '''
                         echo "stack creation"
@@ -33,15 +32,12 @@ pipeline {
                         aws cloudformation create-stack --stack-name EC2-CFT-1 --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
                         '''
                         }
-                    if (env.BRANCH_NAME == 'DELETE') 
+                    else if (env.BRANCH_NAME == 'delete') 
                         {
                         sh '''
                         echo "stack deletion"
                         aws cloudformation delete-stack --stack-name EC2-CFT-1 
                         '''
-                        }
-                    else {
-                        sh "echo 'welcome!'"
                         }
                     }
             }
@@ -49,7 +45,7 @@ pipeline {
     }
     post {
         failure {
-            mail to: bulbulshiv04@gmail.com, subject: 'The Pipeline failed :('
+            mail to: "bulbulshiv04@gmail.com", subject: 'The Pipeline failed :('
             }
         }
 }
