@@ -43,9 +43,4 @@ pipeline {
             }
         }
     }
-    post {
-        failure {
-            mail to: "bulbulshiv04@gmail.com", subject: 'The Pipeline failed :('
-            }
-        }
 }
