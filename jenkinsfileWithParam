@@ -2,7 +2,8 @@ pipeline {
     agent any
     parameters {
         // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
-        choice(name: 'METHOD', choices: ['create','delete'], description: 'select create or delete stack')  
+        choice(name: 'METHOD', choices: ['create','delete'], description: 'select create or delete stack')
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'enter your stack prefix') 
         }
     stages {
         stage('Checkout') {
@@ -14,9 +15,11 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
+
                     withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
 
-                        if ( params.METHOD == 'create') 
+                        if ( params.METHOD == 'create' & params.STACK_PREFIX != "" ) 
+                            
                             {
                             sh '''
                             echo "stack creation"
