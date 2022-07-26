@@ -18,7 +18,7 @@ pipeline {
 
                     withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
 
-                        if ( params.METHOD == 'create' & params.STACK_PREFIX != "" ) 
+                        if ( params.METHOD == 'create' && params.STACK_PREFIX != "" ) 
                             
                             {
                             sh '''
