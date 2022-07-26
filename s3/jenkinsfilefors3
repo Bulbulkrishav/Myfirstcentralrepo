@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
+        stage('build') {
+            steps {
+                withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1') {
+                sh '''
+                echo "welcome to s3"
+                aws cloudformation create-stack --stack-name bulbul-s3-1 --template-body file://s3.yml
+                '''
+                }
+            }
+        }
+    }
+}
