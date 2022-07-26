@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
+        stage('build') {
+            steps {
+                withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1') {
+                sh '''
+                echo "hello world"
+                ls -ltr
+                '''
+                }
+            }
+        }
+        stage('deploy') {
+            steps {
+                script {
+                    if (env.parameters == 'create') 
+                        {
+                        sh '''
+                        echo "stack creation"
+                        ls -ltr
+                        aws cloudformation create-stack --stack-name EC2-CFT-1 --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
+                        '''
+                        }
+                    if (env.BRANCH_NAME == 'delete') 
+                        {
+                        sh '''
+                        echo "stack deletion"
+                        aws cloudformation delete-stack --stack-name EC2-CFT-1 
+                        '''
+                        }
+                    else {
+                        sh "echo 'Hello from ${env.BRANCH_NAME} branch!'"
+                        }
+            }
+        }
+    }
+}

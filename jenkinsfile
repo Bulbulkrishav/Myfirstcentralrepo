@@ -5,7 +5,6 @@ pipeline {
             steps {
                 deleteDir()
                 checkout scm
-                sh "ls -ltr"
             }
         }
         stage('listing') {
