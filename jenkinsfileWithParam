@@ -24,7 +24,7 @@ pipeline {
                             sh '''
                             echo "stack creation"
                             ls -ltr
-                            aws cloudformation create-stack --stack-name EC2-CFT-1 --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
+                            aws cloudformation create-stack --stack-name EC2-CFT-${params.STACK_PREFIX} --template-body file://EC2-single.yml --parameters ParameterKey=KeyName,ParameterValue=linuxpractice
                             '''
                             }
                         else if ( params.METHOD == 'delete') 
