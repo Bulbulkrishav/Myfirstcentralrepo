@@ -8,9 +8,12 @@
         }
     },
     "Resources": {
-        "IamRoleName": {
+        "IamRoleResource": {
             "Type": "AWS::IAM::Role",
             "Properties": {
+                "RoleName":{ 
+                   "Ref": "IamRoleName"
+            },
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
