@@ -1,0 +1,6 @@
+[
+    {
+        "ParameterKey": "IamRoleName",
+        "ParameterValue": "MyRoleFullAccess"
+    }
+]
