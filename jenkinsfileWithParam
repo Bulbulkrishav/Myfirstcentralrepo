@@ -17,13 +17,21 @@ pipeline {
                 checkout scm
             }
         }
+        stage("validation") {
+            steps {
+                script {
+                    if ( params.STACK_PREFIX == "" )
+                        error "This pipeline stops here!"
+                }
+            }
+        }
         stage('deploy') {
             steps {
                 script {
 
                     withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
 
-                        if ( params.METHOD == 'create' && params.STACK_PREFIX != "" ) 
+                        if ( params.METHOD == 'create' ) 
                             
                             {
                             sh(
