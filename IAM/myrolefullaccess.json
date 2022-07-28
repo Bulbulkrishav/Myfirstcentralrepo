@@ -59,7 +59,7 @@
                     }
                 ],
                 "InstanceProfileName": {
-                    "fn::join": [
+                    "Fn::Join": [
                         "-",
                         [
                             {
