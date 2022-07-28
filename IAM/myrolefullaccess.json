@@ -50,13 +50,24 @@
         },
         "RootInstanceProfile": {
             "Type": "AWS::IAM::InstanceProfile",
+            "DependsOn": "IamRoleResource",
             "Properties": {
                 "Path": "/",
                 "Roles": [
                     {
-                        "Ref": "IamRoleName"
+                        "Ref": "IamRoleResource"
                     }
-                ]
+                ],
+                "InstanceProfileName": {
+                    "fn::join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "IamRoleName"
+                            }
+                        ]
+                    ]
+                }
             }
         }
     }
