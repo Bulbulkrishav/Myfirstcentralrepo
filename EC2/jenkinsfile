@@ -1,15 +1,56 @@
 pipeline {
     agent any
+    parameters {
+        // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
+        choice(name: 'METHOD', choices: ['create','delete'], description: 'select create or delete stack')
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'enter your stack prefix') 
+        }
+    environment {
+        stack_prefix = "${params.STACK_PREFIX}"
+        EC2_stack_Name = "EC2-CFT"
+        EMAIL_ID = "bulbulshiv04@gmail.com"
+    }    
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
                 deleteDir()
                 checkout scm
             }
         }
-        stage('listing') {
+        stage("validation") {
             steps {
-                echo "hello world"
+                script {
+                    if ( params.STACK_PREFIX == "" )
+                        error "This pipeline stops here!"
+                }
+            }
+        }
+        stage('deploy') {
+            steps {
+                script {
+
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'create' ) 
+                            
+                            {
+                            sh(
+                            """
+                            echo "stack creation started"
+                            ls -ltr
+                            aws cloudformation create-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}" --template-body file://EC2-single.yml
+                            """)
+                            }
+                        else if ( params.METHOD == 'delete') 
+                            {
+                            sh(
+                            """
+                            echo "stack deletion started"
+                            aws cloudformation delete-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}"
+                            """)
+                            }
+                    }
+                }    
             }
         }
     }
