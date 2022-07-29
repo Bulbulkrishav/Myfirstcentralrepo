@@ -1,5 +1,15 @@
 pipeline {
     agent any
+    parameters {
+        // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
+        choice(name: 'METHOD', choices: ['create','delete'], description: 'select create or delete stack')
+        string(name: 'STACK_PREFIX', defaultValue: '', description: 'enter your stack prefix') 
+        }
+    environment {
+        stack_prefix = "${params.STACK_PREFIX}"
+        EC2_stack_Name = "EC2-CFT"
+        EMAIL_ID = "bulbulshiv04@gmail.com"
+    }    
     stages {
         stage('Checkout') {
             steps {
@@ -7,14 +17,40 @@ pipeline {
                 checkout scm
             }
         }
-        stage('build') {
+        stage("validation") {
             steps {
-                withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1') {
-                sh '''
-                echo "welcome to s3"
-                aws cloudformation create-stack --stack-name bulbul-s3-1 --template-body file://s3/s3Bucket.yml
-                '''
+                script {
+                    if ( params.STACK_PREFIX == "" )
+                        error "This pipeline stops here!"
                 }
+            }
+        }
+        stage('deploy') {
+            steps {
+                script {
+
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'create' ) 
+                            
+                            {
+                            sh(
+                            """
+                            echo "stack creation started"
+                            ls -ltr
+                            aws cloudformation create-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}" --template-body file://s3/s3Bucket.yml
+                            """)
+                            }
+                        else if ( params.METHOD == 'delete') 
+                            {
+                            sh(
+                            """
+                            echo "stack deletion started"
+                            aws cloudformation delete-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}"
+                            """)
+                            }
+                    }
+                }    
             }
         }
     }
