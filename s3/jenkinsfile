@@ -7,8 +7,7 @@ pipeline {
         }
     environment {
         stack_prefix = "${params.STACK_PREFIX}"
-        EC2_stack_Name = "EC2-CFT"
-        EMAIL_ID = "bulbulshiv04@gmail.com"
+        S3_stack_Name = "S3-CFT"
     }    
     stages {
         stage('Checkout') {
@@ -38,7 +37,7 @@ pipeline {
                             """
                             echo "stack creation started"
                             ls -ltr
-                            aws cloudformation create-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}" --template-body file://s3/s3Bucket.yml
+                            aws cloudformation create-stack --stack-name "${S3_stack_Name}-${params.STACK_PREFIX}" --template-body file://s3/s3Bucket.yml
                             """)
                             }
                         else if ( params.METHOD == 'delete') 
@@ -46,7 +45,7 @@ pipeline {
                             sh(
                             """
                             echo "stack deletion started"
-                            aws cloudformation delete-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}"
+                            aws cloudformation delete-stack --stack-name "${S3_stack_Name}-${params.STACK_PREFIX}"
                             """)
                             }
                     }
