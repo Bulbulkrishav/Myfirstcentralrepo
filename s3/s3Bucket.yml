@@ -10,7 +10,7 @@ Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Join ['-', [!Ref 'MyBucketName', !Ref 'AWS::Region']]
+      BucketName: !Join ['-', [!Ref MyBucketName, !Ref 'AWS::Region']]
       BucketEncyption: 
         ServerSideEncryptionConfiguration: 
           - ServerSideEncryptionRule
