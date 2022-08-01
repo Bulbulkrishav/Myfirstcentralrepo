@@ -2,7 +2,7 @@ pipeline {
     agent any
     parameters {
         // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
-        choice(name: 'METHOD', choices: ['create','delete'], description: 'select create or delete stack')
+        choice(name: 'METHOD', choices: ['create','delete','update'], description: 'select create or delete stack')
         string(name: 'STACK_PREFIX', defaultValue: '', description: 'enter your stack prefix') 
         }
     environment {
