@@ -3,30 +3,25 @@ Metadata:
   License: Apache-2.0
 Description: 'AWS CloudFormation Template to create an S3_Website_Bucket_With_Retain_On_Delete'
 Parameters:
-  BucketNameParameter:
+  MyBucketName:
     Type: String
     Description: Bucket Name
-    Default: mybucket-1
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Join ['-', [!Ref 'BucketNameParameter', !Ref 'AWS::Region']]
+      BucketName: !Join ['-', [!Ref 'MyBucketName', !Ref 'AWS::Region']]
+      BucketEncyption: 
+        ServerSideEncryptionConfiguration: 
+          - ServerSideEncryptionRule
       VersioningConfiguration:
         Status: Enabled
-      AccessControl: PublicRead
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: error.html
       Tags:
       - Key: "Name"
         Value: "S3-cft"  
     DeletionPolicy: Retain
 
 Outputs:
-  WebsiteURL:
-    Value: !GetAtt [S3Bucket, WebsiteURL]
-    Description: URL for website hosted on S3
   S3BucketSecureURL:
     Value: !Join ['', ['https://', !GetAtt [S3Bucket, DomainName]]]
     Description: Name of AWS S3 bucket to hold website content

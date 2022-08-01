@@ -27,9 +27,7 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
-
                     withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
-
                         if ( params.METHOD == 'create' ) 
                             
                             {
