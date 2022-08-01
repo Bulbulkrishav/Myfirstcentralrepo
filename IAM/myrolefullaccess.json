@@ -21,7 +21,8 @@
                             "Effect": "Allow",
                             "Principal": {
                                 "Service": [
-                                    "ec2.amazonaws.com"
+                                    "ec2.amazonaws.com",
+                                    "s3.amazonaws.com"
                                 ]
                             },
                             "Action": [
@@ -33,7 +34,7 @@
                 "Path": "/",
                 "Policies": [
                     {
-                        "PolicyName": "MyPolicyFullAccess",
+                        "PolicyName": "S3BucketPolicy",
                         "PolicyDocument": {
                             "Version": "2012-10-17",
                             "Statement": [
