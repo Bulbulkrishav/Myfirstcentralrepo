@@ -38,6 +38,15 @@ pipeline {
                             aws cloudformation create-stack --stack-name "${S3_stack_Name}-${params.STACK_PREFIX}" --template-body file://s3/s3Bucket.yml --parameters file://s3/s3bucket-parameter.json
                             """)
                             }
+                        else if ( params.METHOD == 'update' ) 
+                            
+                            {
+                            sh(
+                            """
+                            echo "stack creation started"
+                            aws cloudformation update-stack --stack-name "${S3_stack_Name}-${params.STACK_PREFIX}" --template-body file://s3/s3Bucket.yml
+                            """)
+                            }    
                         else if ( params.METHOD == 'delete') 
                             {
                             sh(
