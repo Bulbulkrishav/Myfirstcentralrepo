@@ -20,7 +20,7 @@ Resources:
       Tags:
       - Key: "Name"
         Value: "S3-cft"  
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
 
 Outputs:
   S3BucketSecureURL:
