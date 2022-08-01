@@ -1,2 +1,1 @@
-ParameterKey: MyBucketName
-ParameterValue: test
+MyBucketName: test
