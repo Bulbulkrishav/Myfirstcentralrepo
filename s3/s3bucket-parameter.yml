@@ -1,2 +1,2 @@
-- ParameterKey = MyBucketName
-  ParameterValue = Test
+ParameterKey = MyBucketName
+ParameterValue = Test
