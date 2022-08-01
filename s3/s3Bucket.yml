@@ -11,10 +11,10 @@ Resources:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Join ['-', [!Ref MyBucketName, !Ref 'AWS::Region']]
-      BucketEncyption: 
-        ServerSideEncryptionConfiguration: 
+      BucketEncryption:       
+        ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
-                SSEAlgorithm: AES256
+              SSEAlgorithm: AES256
       VersioningConfiguration:
         Status: Enabled
       Tags:
