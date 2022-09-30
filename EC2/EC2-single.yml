@@ -54,12 +54,13 @@ Resources:
             #!/bin/bash
             exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
             echo "Hello from user-data!"
-            yum update -y
-            sudo yum install -y perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https perl-Digest-SHA.x86_64
-            cd /home/ec2-user/
-            curl https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.2.zip -O
-            unzip CloudWatchMonitoringScripts-1.2.2.zip
-            rm -rf CloudWatchMonitoringScripts-1.2.2.zip
+            yum update  -y
+            yum install httpd -y
+            cd /var/www/html
+            echo "MyGoogle" > index.html
+            service httpd start
+            chkconfig httpd on
+            echo "httpd service successfully started"
 
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
