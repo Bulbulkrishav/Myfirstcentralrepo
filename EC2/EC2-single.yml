@@ -16,7 +16,7 @@ Parameters:
   InstanceType:
     Description: WebServer EC2 instance type
     Type: String
-    Default: t3.small
+    Default: t2.micro
     AllowedValues: [t2.nano, t2.micro, t2.small, t2.medium, t2.large, t2.xlarge, t2.2xlarge,
       t3.nano, t3.micro, t3.small]
     ConstraintDescription: must be a valid EC2 instance type.
@@ -54,6 +54,7 @@ Resources:
             #!/bin/bash
             exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
             echo "Hello from user-data!"
+            sudo su -
             yum update  -y
             yum install httpd -y
             cd /var/www/html
@@ -70,6 +71,10 @@ Resources:
       - IpProtocol: tcp
         FromPort: 22
         ToPort: 22
+        CidrIp: !Ref 'SSHLocation'
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
         CidrIp: !Ref 'SSHLocation'
 Outputs:
   InstanceId:
