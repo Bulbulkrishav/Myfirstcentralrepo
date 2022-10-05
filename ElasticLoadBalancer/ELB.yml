@@ -14,7 +14,7 @@ Resources:
   EC2Instance1:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: us-east-2a
+      AvailabilityZone: us-east-2
       ImageId: !Ref 'LatestAmiId'
       InstanceType: t2.micro
       SecurityGroups:
@@ -32,7 +32,7 @@ Resources:
   EC2Instance2:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: us-east-2b
+      AvailabilityZone: us-east-1
       ImageId: !Ref 'LatestAmiId'
       InstanceType: t2.micro
       SecurityGroups:
