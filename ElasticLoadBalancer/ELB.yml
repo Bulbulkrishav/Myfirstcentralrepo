@@ -7,15 +7,12 @@ Parameters:
     Description: Key Pair for EC2
     Type: 'AWS::EC2::KeyPair::KeyName'
     Default: linuxpractice
-  LatestAmiId:
-    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
-    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
 Resources:
   EC2Instance1:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: us-east-2
-      ImageId: !Ref 'LatestAmiId'
+      ImageId: ami-026b57f3c383c2eec
       InstanceType: t2.micro
       SecurityGroups:
         - !Ref EC2SecurityGroup
@@ -33,7 +30,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: us-east-1
-      ImageId: !Ref 'LatestAmiId'
+      ImageId: ami-026b57f3c383c2eec
       InstanceType: t2.micro
       SecurityGroups:
         - !Ref EC2SecurityGroup
