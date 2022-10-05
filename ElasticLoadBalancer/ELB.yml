@@ -2,7 +2,7 @@ Parameters:
   SecurityGroupDescription:
     Description: Security Group Description
     Type: String
-    
+    Default: "mysequritygroup"
   KeyName:
     Description: Key Pair for EC2
     Type: 'AWS::EC2::KeyPair::KeyName'
