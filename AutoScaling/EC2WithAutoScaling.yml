@@ -74,4 +74,3 @@ Resources:
       MaxSize: '2'
       MinSize: '1'
       DesiredCapacity: '1'
-      VPCZoneIdentifier: !Ref Subnets
