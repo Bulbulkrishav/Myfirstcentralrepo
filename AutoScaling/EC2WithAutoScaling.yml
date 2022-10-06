@@ -24,15 +24,11 @@ Resources:
   EC2SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: !Ref SecurityGroupDescription
+      # GroupDescription: !Ref SecurityGroupDescription
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 80
         ToPort: 80
-        SourceSecurityGroupId: 
-          Fn::GetAtt:
-          - ELBSecurityGroup
-          - GroupId
       - IpProtocol: tcp
         FromPort: 22
         ToPort: 22
