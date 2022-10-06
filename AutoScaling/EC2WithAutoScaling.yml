@@ -20,7 +20,7 @@ Resources:
       LaunchTemplateData:
         ImageId: !Ref LatestAmiId
         InstanceType: !Ref InstanceType
-        SecurityGroups: !Ref EC2SecurityGroup
+        SecurityGroups: !GetAtt EC2SecurityGroup.Group.Id
   EC2SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
