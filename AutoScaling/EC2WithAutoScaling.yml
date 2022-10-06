@@ -25,6 +25,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       # GroupDescription: !Ref SecurityGroupDescription
+      GroupDescription: Enable SSH access via port 22
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 80
