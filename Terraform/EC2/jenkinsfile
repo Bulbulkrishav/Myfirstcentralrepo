@@ -27,6 +27,7 @@ pipeline {
                         if ( params.METHOD == 'plan' ) 
                             
                             {
+                                git branch: 'main', credentialsId: 'Git',  url: 'https://github.com/Bulbulkrishav/Myfirstcentralrepo/Terraform/EC2'
                             sh 'terraform plan'
                             }
                         
