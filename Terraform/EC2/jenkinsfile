@@ -2,7 +2,7 @@ pipeline {
     agent any
     parameters {
         // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
-        choice(name: 'METHOD', choices: ['plan','apply' , 'destroy'], description: 'select create or delete stack')
+        choice(name: 'METHOD', choices: ['plan','apply' , 'destroy'], description: 'select create or delete EC2')
         }
     environment {
         EMAIL_ID = "bulbulshiv04@gmail.com"
@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'Git',  url: 'https://github.com/Bulbulkrishav/Myfirstcentralrepo/Terraform/EC2'
+                git branch: 'main',  url: 'https://github.com/Bulbulkrishav/Myfirstcentralrepo/Terraform/EC2'
             }
         }
         stage('Terraform Init') {
@@ -27,9 +27,12 @@ pipeline {
                         if ( params.METHOD == 'plan' ) 
                             
                             {
-                            sh 'terraform plan'
+                            sh(
+                            """
+                            ls -ltr
+                            terraform plan
+                            """)
                             }
-                        
                     }
                 }    
             }
