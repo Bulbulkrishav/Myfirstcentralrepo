@@ -10,7 +10,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'Git', url: 'https://github.com/gauravk29/full_vpc'
+                git branch: 'main', credentialsId: 'Git',  url: 'https://github.com/Bulbulkrishav/Myfirstcentralrepo/Terraform/EC2'
+            }
+        }
+        stage('Terraform Init') {
+            steps {
+                sh 'terraform init'
             }
         }
         stage('plan') {
@@ -22,19 +27,41 @@ pipeline {
                         if ( params.METHOD == 'plan' ) 
                             
                             {
-                            sh(
-                            """
-                            aws cloudformation create-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}" --template-body file://EC2/EC2-single.yml
-                            """)
+                            sh 'terraform plan'
                             }
-                        else if ( params.METHOD == 'delete') 
+                        
+                    }
+                }    
+            }
+        }
+        stage('apply') {
+            steps {
+                script {
+
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'apply' ) 
+                            
                             {
-                            sh(
-                            """
-                            echo "stack deletion started"
-                            aws cloudformation delete-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}"
-                            """)
+                            sh 'terraform apply --auto-approve'
                             }
+                        
+                    }
+                }    
+            }
+        }
+        stage('destroy') {
+            steps {
+                script {
+
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'destroy' ) 
+                            
+                            {
+                            sh 'terraform destroy --auto-approve'
+                            }
+                        
                     }
                 }    
             }
