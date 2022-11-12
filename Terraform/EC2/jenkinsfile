@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        terraform 'terraform'
+        }
     parameters {
         // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
         choice(name: 'METHOD', choices: ['plan','apply' , 'destroy'], description: 'select create or delete EC2')
