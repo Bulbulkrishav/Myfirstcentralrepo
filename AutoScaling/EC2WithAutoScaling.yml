@@ -12,6 +12,10 @@ Parameters:
       - t2.small
       - t2.medium
     Default: t2.micro
+  Subnets:
+    Type: 'List<AWS::EC2::Subnet::Id>'
+    Description: A list of subnets for the Auto Scaling group
+    Default: subnet-0205b7bcb15a57cc2
 Resources:
   myLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
@@ -69,3 +73,4 @@ Resources:
       MaxSize: '1'
       MinSize: '1'
       DesiredCapacity: '1'
+      VPCZoneIdentifier: !Ref Subnets
