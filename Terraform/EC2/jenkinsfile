@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    parameters {
+        // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
+        choice(name: 'METHOD', choices: ['plan','apply' , 'destroy'], description: 'select create or delete stack')
+        }
+    environment {
+        EMAIL_ID = "bulbulshiv04@gmail.com"
+    }    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'Git', url: 'https://github.com/gauravk29/full_vpc'
+            }
+        }
+        stage('plan') {
+            steps {
+                script {
+
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'plan' ) 
+                            
+                            {
+                            sh(
+                            """
+                            aws cloudformation create-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}" --template-body file://EC2/EC2-single.yml
+                            """)
+                            }
+                        else if ( params.METHOD == 'delete') 
+                            {
+                            sh(
+                            """
+                            echo "stack deletion started"
+                            aws cloudformation delete-stack --stack-name "${EC2_stack_Name}-${params.STACK_PREFIX}"
+                            """)
+                            }
+                    }
+                }    
+            }
+        }
+    }
+}
