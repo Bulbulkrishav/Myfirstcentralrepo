@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    tools {
-        terraform 'terraform'
-        }
     parameters {
         // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
         choice(name: 'METHOD', choices: ['plan','apply' , 'destroy'], description: 'select create or delete EC2')
@@ -13,7 +10,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',  url: 'https://github.com/Bulbulkrishav/Myfirstcentralrepo/Terraform/EC2'
+                deleteDir()
+                checkout scm 
             }
         }
         stage('Terraform Init') {
