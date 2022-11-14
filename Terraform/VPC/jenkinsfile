@@ -1,0 +1,99 @@
+pipeline {
+    agent any
+    parameters {
+        // string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
+        choice(name: 'METHOD', choices: ['plan','apply' , 'destroy'], description: 'select create or delete EC2')
+        }
+    environment {
+        EMAIL_ID = "bulbulshiv04@gmail.com"
+    }    
+    stages {
+        stage('Checkout') {
+            steps {
+                deleteDir()
+                checkout scm 
+            }
+        }
+        stage('Terraform Init') {
+            steps {
+                script{
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+                        sh(
+                            """
+                            pwd
+                            cd Terraform/VPC/
+                            ls -ltr
+                            terraform init
+                            """)
+                        }
+                }    
+            }
+        }
+        stage('plan') {
+            steps {
+                script {
+
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'plan' ) 
+                            
+                            {
+                            sh(
+                            """
+                            pwd
+                            cd Terraform/VPC/
+                            ls -ltr
+                            terraform plan -out=terraform.plan
+                            """)
+                            }
+                    }
+                }    
+            }
+        }
+        stage('apply') {
+            steps {
+                script {
+
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'apply' ) 
+                            
+                            {
+                            sh(
+                            """
+                            pwd
+                            cd Terraform/VPC/
+                            ls -ltr
+                            terraform plan -out=terraform.plan
+                            terraform apply "terraform.plan"
+                            """)
+                            }
+                        
+                    }
+                }    
+            }
+        }
+        stage('destroy') {
+            steps {
+                script {
+
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+
+                        if ( params.METHOD == 'destroy' ) 
+                            
+                            {
+                            sh(
+                            """
+                            pwd
+                            cd Terraform/EC2/
+                            ls -ltr
+                            terraform destroy -auto-approve
+                            """)
+                            }
+                        
+                    }
+                }    
+            }
+        }
+    }
+}
