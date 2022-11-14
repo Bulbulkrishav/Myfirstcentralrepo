@@ -16,7 +16,17 @@ pipeline {
         }
         stage('Terraform Init') {
             steps {
-                sh 'terraform init'
+                script{
+                    withAWS(credentials: 'aws-cli-auth-cred', region: 'us-east-1'){
+                        sh(
+                            """
+                            pwd
+                            cd Terraform/EC2/
+                            ls -ltr
+                            terraform init
+                            """)
+                        }
+                }    
             }
         }
         stage('plan') {
@@ -30,8 +40,10 @@ pipeline {
                             {
                             sh(
                             """
+                            pwd
+                            cd Terraform/EC2/
                             ls -ltr
-                            terraform plan
+                            terraform plan -out=terraform.plan
                             """)
                             }
                     }
@@ -47,7 +59,13 @@ pipeline {
                         if ( params.METHOD == 'apply' ) 
                             
                             {
-                            sh 'terraform apply --auto-approve'
+                            sh(
+                            """
+                            pwd
+                            cd Terraform/EC2/
+                            ls -ltr
+                            terraform apply "terraform.plan"
+                            """)
                             }
                         
                     }
@@ -63,7 +81,13 @@ pipeline {
                         if ( params.METHOD == 'destroy' ) 
                             
                             {
-                            sh 'terraform destroy --auto-approve'
+                            sh(
+                            """
+                            pwd
+                            cd Terraform/EC2/
+                            ls -ltr
+                            terraform destroy
+                            """)
                             }
                         
                     }
