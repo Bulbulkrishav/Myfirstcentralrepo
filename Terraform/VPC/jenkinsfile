@@ -87,6 +87,7 @@ pipeline {
                             pwd
                             cd Terraform/EC2/
                             ls -ltr
+                            terraform init
                             terraform destroy -auto-approve
                             """)
                             }
