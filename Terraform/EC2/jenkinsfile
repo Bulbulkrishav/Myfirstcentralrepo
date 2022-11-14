@@ -64,6 +64,7 @@ pipeline {
                             pwd
                             cd Terraform/EC2/
                             ls -ltr
+                            terraform plan -out=terraform.plan
                             terraform apply "terraform.plan"
                             """)
                             }
@@ -86,7 +87,7 @@ pipeline {
                             pwd
                             cd Terraform/EC2/
                             ls -ltr
-                            terraform destroy
+                            terraform destroy -auto-approve
                             """)
                             }
                         
